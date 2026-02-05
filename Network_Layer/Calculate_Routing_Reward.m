@@ -42,12 +42,32 @@ function R_total = Calculate_Routing_Reward(Nodes, curr_id, next_id, Sink)
     SNR_link = 150 - TL - 50; 
     R_L = SNR_link / SNR_ref;
     
-    % 5. 动态权重调整
+    % --- [NEW] 5. 传输延迟惩罚 (R_Delay) ---
+    % 水声传播速度约为 1500 m/s
+    v_sound = 1500;
+    delay_prop = d_link / v_sound; 
+    % 归一化延迟 (相对于最大通信距离的延迟 ~0.21s)
+    max_delay = Comm_Range / v_sound;
+    % 延迟越小越好，所以作为正向奖励需取反，或者作为负向惩罚
+    % 这里我们定义 R_Delay 为 "延迟效率"，(max - current)/max，范围 [0, 1]
+    R_Delay = (max_delay - delay_prop) / max_delay;
+
+    % 6. 动态权重调整
     % 当剩余能量减少时，极大化 alpha 以保护能量
     dynamic_alpha = min(0.95, alpha_val + (0.6 * (1 - E_ratio)));
-    dynamic_beta = max(0.05, 1 - dynamic_alpha - gamma_val);
+    % 动态分配剩余权重给 进度(Beta), 链路质量(Gamma), 和 延迟(Delta - implicit)
+    remaining_weight = 1 - dynamic_alpha;
     
-    % 6. 总奖励合成
-    % 调高 R_D 的基础收益，但会被 R_cost 在长距离下对冲
-    R_total = dynamic_alpha * R_E + (5 * dynamic_beta * R_D) + gamma_val * R_L + R_cost;
+    % 重新分配权重: 进度(40%), 链路(30%), 延迟(30%) of remaining
+    w_progress = remaining_weight * 0.4;
+    w_link     = remaining_weight * 0.3;
+    w_delay    = remaining_weight * 0.3;
+    
+    % 7. 总奖励合成
+    % R_total = alpha*Energy + w_p*Progress + w_l*Link + w_d*Delay + Cost
+    R_total = dynamic_alpha * R_E + ...
+              (w_progress * 15 * R_D) + ...   % 放大进度权重
+              (w_link * R_L) + ...
+              (w_delay * 10 * R_Delay) + ...  % 放大延迟权重
+              R_cost;
 end

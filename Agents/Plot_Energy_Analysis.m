@@ -7,7 +7,7 @@ color_red   = [192, 80, 77] / 255;   % #C0504D (QELAR)
 color_green = [155, 187, 89] / 255;  % #9BBB59 (Proposed)
 
 files = {'Results/Data_LEACH.mat', 'Results/Data_QELAR.mat', 'Results/Data_QL.mat'};
-labels = {'LEACH', 'QELAR', '本文优化算法'};
+labels = {'LEACH', 'QELAR', 'EC-QL'};
 colors = {color_blue, color_red, color_green};
 
 figure('Color', 'w', 'Position', [100, 100, 1000, 500]);

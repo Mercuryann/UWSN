@@ -11,7 +11,7 @@ load(data_file);
 % 2. 定义你指定的专业配色
 color_blue  = [79, 129, 189] / 255;  % #4F81BD (LEACH)
 color_red   = [192, 80, 77] / 255;   % #C0504D (QELAR)
-color_green = [155, 187, 89] / 255;  % #9BBB59 (本文优化 QL)
+color_green = [155, 187, 89] / 255;  % #9BBB59 (EC-QL)
 
 % 3. 绘图配置
 figure('Color', 'w', 'Position', [100, 100, 850, 600]);
@@ -19,15 +19,15 @@ hold on;
 
 % 绘制 LEACH
 plot(load_steps, lifetimes_matrix(1,:), 's--', 'Color', color_blue, ...
-    'LineWidth', 2, 'MarkerSize', 8, 'MarkerFaceColor', color_blue, 'DisplayName', 'LEACH (Baseline)');
+    'LineWidth', 2, 'MarkerSize', 8, 'MarkerFaceColor', color_blue, 'DisplayName', 'LEACH');
 
 % 绘制 QELAR
 plot(load_steps, lifetimes_matrix(2,:), 'v--', 'Color', color_red, ...
-    'LineWidth', 2, 'MarkerSize', 8, 'MarkerFaceColor', color_red, 'DisplayName', 'QELAR (Energy-only)');
+    'LineWidth', 2, 'MarkerSize', 8, 'MarkerFaceColor', color_red, 'DisplayName', 'QELAR');
 
 % 绘制本文优化算法
 plot(load_steps, lifetimes_matrix(3,:), 'o-', 'Color', color_green, ...
-    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', color_green, 'DisplayName', '本文优化 Q-Learning');
+    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', color_green, 'DisplayName', 'EC-QL');
 
 % 4. 图表美化
 xlabel('网络业务负载 (Packets / Node / Round)', 'FontSize', 12, 'FontWeight', 'bold');
@@ -59,7 +59,7 @@ load(data_file);
 % 2. 定义专业配色 (RGB)
 c_blue  = [79, 129, 189] / 255;  % LEACH
 c_red   = [192, 80, 77] / 255;   % QELAR
-c_green = [155, 187, 89] / 255;  % 本文算法
+c_green = [155, 187, 89] / 255;  % EC-QL
 
 % 3. 绘图配置
 figure('Color', 'w', 'Position', [100, 100, 700, 500]);
@@ -67,15 +67,15 @@ hold on;
 
 % 绘制 LEACH
 plot(area_steps, results_matrix(1,:), 's--', 'Color', c_blue, ...
-    'LineWidth', 1.5, 'MarkerSize', 8, 'MarkerFaceColor', c_blue, 'DisplayName', 'LEACH (Baseline)');
+    'LineWidth', 1.5, 'MarkerSize', 8, 'MarkerFaceColor', c_blue, 'DisplayName', 'LEACH');
 
 % 绘制 QELAR
 plot(area_steps, results_matrix(2,:), 'v--', 'Color', c_red, ...
-    'LineWidth', 1.5, 'MarkerSize', 8, 'MarkerFaceColor', c_red, 'DisplayName', 'QELAR (Energy-only)');
+    'LineWidth', 1.5, 'MarkerSize', 8, 'MarkerFaceColor', c_red, 'DisplayName', 'QELAR');
 
 % 绘制本文优化算法
 plot(area_steps, results_matrix(3,:), 'o-', 'Color', c_green, ...
-    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', c_green, 'DisplayName', '本文优化 Q-Learning');
+    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', c_green, 'DisplayName', 'EC-QL');
 
 % 4. 图表美化
 xlabel('网络区域边长 (Area Side Length / m)', 'FontSize', 12, 'FontWeight', 'bold');
@@ -114,7 +114,7 @@ plot(hetero_steps, results_matrix(2,:), 'v--', 'Color', c_red, ...
 
 % 绘制本文算法
 plot(hetero_steps, results_matrix(3,:), 'o-', 'Color', c_green, ...
-    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', c_green, 'DisplayName', '本文优化 Q-Learning');
+    'LineWidth', 2.5, 'MarkerSize', 10, 'MarkerFaceColor', c_green, 'DisplayName', 'EC-QL');
 
 % 4. 图表美化
 xlabel('初始能量异构因子 (Heterogeneity Factor)', 'FontSize', 12, 'FontWeight', 'bold');

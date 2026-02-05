@@ -1,6 +1,10 @@
-function [Nodes, Q_Table_Routing] = Route_To_Sink(curr_node_id, Nodes, Sink, Q_Table_Routing, epsilon)
+function [Nodes, Q_Table_Routing, next_hop_id, hop_delay] = Route_To_Sink(curr_node_id, Nodes, Sink, Q_Table_Routing, epsilon)
     global Packet_Length learning_rate gamma_discount
     global Comm_Range % 确保全局变量已载入
+    
+    next_hop_id = -1; % Init
+    hop_delay = 0;
+    v_sound = 1500.0;
 
     curr_idx = find([Nodes.id] == curr_node_id);
     candidates = [];
@@ -25,10 +29,11 @@ function [Nodes, Q_Table_Routing] = Route_To_Sink(curr_node_id, Nodes, Sink, Q_T
        
         if dist_to_sink_curr <= Comm_Range
             [Nodes, success] = Update_Energy(Nodes, curr_node_id, Sink.id, Packet_Length);
-            
+            next_hop_id = 0; % 0 代表 Sink
+            hop_delay = dist_to_sink_curr / v_sound;
             return;
         else
-    
+            % 死路，无法传输
             return; 
         end
     end
@@ -43,6 +48,18 @@ function [Nodes, Q_Table_Routing] = Route_To_Sink(curr_node_id, Nodes, Sink, Q_T
 
     % 4. 传输并更新 Q 表
     [Nodes, success] = Update_Energy(Nodes, curr_node_id, next_hop_id, Packet_Length);
+    
+    % 计算延迟
+    if next_hop_id == 0 % Should not happen here logic-wise but safe check
+        d_next = dist_to_sink_curr;
+    else
+        next_idx = find([Nodes.id] == next_hop_id);
+        d_next = sqrt((Nodes(curr_idx).x - Nodes(next_idx).x)^2 + ...
+                      (Nodes(curr_idx).y - Nodes(next_idx).y)^2 + ...
+                      (Nodes(curr_idx).z - Nodes(next_idx).z)^2);
+    end
+    hop_delay = d_next / v_sound;
+
     if success
         
         reward = Calculate_Routing_Reward(Nodes, curr_node_id, next_hop_id, Sink);
@@ -51,5 +68,6 @@ function [Nodes, Q_Table_Routing] = Route_To_Sink(curr_node_id, Nodes, Sink, Q_T
             learning_rate * (reward + gamma_discount * max_future_q);
     else
         Q_Table_Routing(curr_node_id, next_hop_id) = -100;
+        next_hop_id = -1; % 表示失败
     end
 end

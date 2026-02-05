@@ -130,12 +130,12 @@ for k = 1:length(source_nodes)
     end
 end
 
-title(['UWSN Intelligence Multi-hop Routing with Relays Highlighted (Area: 800m)']);
-xlabel('X (m)'); ylabel('Y (m)'); zlabel('Depth (m)');
+title('EC-QL 智能多跳路由可视化 (区域: 800m)', 'FontSize', 14, 'FontWeight', 'bold');
+xlabel('X 轴 (m)', 'FontSize', 12); ylabel('Y 轴 (m)', 'FontSize', 12); zlabel('水深 (m)', 'FontSize', 12);
 % 更新图例以包含中继节点
-legend([Relay_Handles], {'Relay Sensor Node'}, 'Location', 'northeastoutside');
+legend([Relay_Handles], {'中继传感器节点'}, 'FontSize', 10, 'Location', 'northeastoutside');
 
 % 自动保存
-if ~exist('Results', 'dir'), mkdir('Results'); end
-saveas(gcf, 'Results/Final_Highlighted_Routing.png');
-fprintf('可视化完成！图像已保存至 Results/Final_Highlighted_Routing.png\n');
+if ~exist('../Results', 'dir'), mkdir('../Results'); end
+saveas(gcf, '../Results/Final_Highlighted_Routing.png');
+fprintf('可视化完成！图像已保存至 ../Results/Final_Highlighted_Routing.png\n');

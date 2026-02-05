@@ -53,7 +53,7 @@ function fnd = Evaluate_Protocol_Performance(mode, packet_load)
             end
 
         elseif strcmp(mode, 'QL')
-            % 本文优化的分簇强化学习算法
+            % EC-QL (本文优化的分簇强化学习算法)
             [CHs, Mems] = Run_Cluster_Election(Nodes, Q_Table_Cluster, current_epsilon);
             if ~isempty(CHs)
                 for p = 1:Packets_Per_Node
