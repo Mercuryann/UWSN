@@ -64,6 +64,12 @@
     *   **红色五角星**: Sink 节点（水面汇聚站）。
     *   此图直观展示了 EC-QL 如何智能选择中继点进行多跳传输。
 
+### 2.5 物理与信道模型分析
+*   **`Channel_Model_Curves.png`**: 水声信道特性分析图。
+    *   **上图**: 频率与吸收系数 (Thorp模型) 的关系。
+    *   **下图**: 不同频率下，传输损耗 (TL) 随距离增加的衰减曲线。
+    *   验证了仿真环境所使用的物理层模型的正确性。
+
 ---
 
 ## 3. 使用说明 (Usage)
@@ -95,6 +101,9 @@ Agents/Plot_Robustness_Analysis
 
 % 生成 3D 路由可视化图
 Agents/Plot_Routing_Paths
+
+% 生成物理层模型分析图
+Agents/Plot_Physical_Model
 ```
 
 所有生成的图像将自动保存在项目根目录的 **`Results/`** 文件夹中。
